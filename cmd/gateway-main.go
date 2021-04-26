@@ -36,6 +36,7 @@ import (
 )
 
 var (
+	//全局变量
 	gatewayCmd = cli.Command{
 		Name:            "gateway",
 		Usage:           "start object storage gateway",
@@ -103,6 +104,7 @@ func NewGatewayLayerWithLocker(gwLayer ObjectLayer) ObjectLayer {
 }
 
 // RegisterGatewayCommand registers a new command for gateway.
+// RegisterGatewayCommand 把传入的命令作为gatewayCmd的子命令完成注册，而gatewayCmd就是cmd包中的全局变量
 func RegisterGatewayCommand(cmd cli.Command) error {
 	cmd.Flags = append(append(cmd.Flags, ServerFlags...), GlobalFlags...)
 	gatewayCmd.Subcommands = append(gatewayCmd.Subcommands, cmd)
@@ -152,7 +154,7 @@ func ValidateGatewayArguments(serverAddr, endpointAddr string) error {
 }
 
 // StartGateway - handler for 'minio gateway <name>'.
-func StartGateway(ctx *cli.Context, gw Gateway) {
+func StartGateway(ctx *cli.Context, gw Gateway) { //  ctx在终端输入的命令、参数以及Flag等, Gateway 要启动哪个网关,是一个接口： minio/cmd/gateway-interface.go
 	defer globalDNSCache.Stop()
 
 	// This is only to uniquely identify each gateway deployments.
@@ -305,7 +307,7 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 
 	// Once endpoints are finalized, initialize the new object api in safe mode.
 	globalObjLayerMutex.Lock()
-	globalObjectAPI = newObject
+	globalObjectAPI = newObject //关键代码，使用网关接口生成的ObjectLayer
 	globalObjLayerMutex.Unlock()
 
 	if gatewayName == NASBackendGateway {

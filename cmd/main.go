@@ -121,9 +121,9 @@ func newApp(name string) *cli.App {
 		return closestCommands
 	}
 
-	// Register all commands.
+	// Register all commands.   在终端输入minio回车的时候就可以看到server和gateway这两个命令的提示
 	registerCommand(serverCmd)
-	registerCommand(gatewayCmd)
+	registerCommand(gatewayCmd) //注册的网关命令
 
 	// Set up app.
 	cli.HelpFlag = cli.BoolFlag{
@@ -158,7 +158,7 @@ func newApp(name string) *cli.App {
 	return app
 }
 
-// Main main for minio server.
+// Main main for minio server.   minio服务器的主要主干
 func Main(args []string) {
 	// Set the minio app name.
 	appName := filepath.Base(args[0])

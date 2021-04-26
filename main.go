@@ -28,7 +28,7 @@ import (
 	minio "github.com/minio/minio/cmd"
 
 	// Import gateway
-	_ "github.com/minio/minio/cmd/gateway"
+	_ "github.com/minio/minio/cmd/gateway" // 调用minio/cmd/gateway包的init函数，初始化支持的网关
 )
 
 func main() {

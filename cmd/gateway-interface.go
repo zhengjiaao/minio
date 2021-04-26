@@ -31,11 +31,13 @@ const (
 )
 
 // Gateway represents a gateway backend.
+// Gateway 通用的网关操作接口，所以每个网关都有自己的实现
 type Gateway interface {
 	// Name returns the unique name of the gateway.
 	Name() string
 
 	// NewGatewayLayer returns a new  ObjectLayer.
+	// 通过 NewGatewayLayer 获得一个ObjectLayer来操作不同网关的文件或者对象数据
 	NewGatewayLayer(creds auth.Credentials) (ObjectLayer, error)
 
 	// Returns true if gateway is ready for production.

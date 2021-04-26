@@ -56,10 +56,11 @@ EXAMPLES:
      {{.Prompt}} {{.HelpName}} /shared/nasvol
 `
 
+	//RegisterGatewayCommand 函数把nas这个子命令注册给gateway这个父命令
 	minio.RegisterGatewayCommand(cli.Command{
 		Name:               minio.NASBackendGateway,
 		Usage:              "Network-attached storage (NAS)",
-		Action:             nasGatewayMain,
+		Action:             nasGatewayMain, // nasGatewayMain函数的源代码实现即可分析NAS网关的启动逻辑
 		CustomHelpTemplate: nasGatewayTemplate,
 		HideHelpCommand:    true,
 	})
@@ -72,6 +73,7 @@ func nasGatewayMain(ctx *cli.Context) {
 		cli.ShowCommandHelpAndExit(ctx, minio.NASBackendGateway, 1)
 	}
 
+	//StartGateway 根据参数启动相应的网关
 	minio.StartGateway(ctx, &NAS{ctx.Args().First()})
 }
 
