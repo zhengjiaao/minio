@@ -42,7 +42,7 @@ export const SideBar = ({ sidebarOpen, clickOutside }) => {
         })}
       >
         <div className="fes-header clearfix hidden-sm hidden-xs">
-          <img src={logo} alt="" />
+          //<img src={logo} alt="" />
           <h2>DIST Browser</h2>
         </div>
         <div className="fes-list">

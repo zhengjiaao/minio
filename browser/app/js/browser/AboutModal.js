@@ -31,11 +31,11 @@ export const AboutModal = ({ serverInfo, hideAbout }) => {
         <span>×</span>
       </button>
       <div className="ma-inner">
-        <div className="mai-item hidden-xs">
+        /*<div className="mai-item hidden-xs">
           <a href="http://www.dist.com.cn" target="_blank">
             <img className="maii-logo" src={logo} alt="" />
           </a>
-        </div>
+        </div>*/
         <div className="mai-item">
           <ul className="maii-list">
             <li>
