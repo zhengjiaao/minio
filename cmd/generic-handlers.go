@@ -125,7 +125,8 @@ func containsReservedMetadata(header http.Header) bool {
 
 // Reserved bucket.
 const (
-	minioReservedBucket     = "minio"
+	//minioReservedBucket     = "minio"
+	minioReservedBucket     = "oss"
 	minioReservedBucketPath = SlashSeparator + minioReservedBucket
 	loginPathPrefix         = SlashSeparator + "login"
 )
