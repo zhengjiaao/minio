@@ -93,7 +93,7 @@ export class BrowserDropdown extends React.Component {
               </a>
             </li>
             <li>
-              <a target="_blank" href="https://min.io/pricing?ref=ob">
+              <a target="_blank" href="http://www.dist.com.cn/pricing?ref=ob">
                 Get Support <i className="fas fa-question-circle" />
               </a>
             </li>
