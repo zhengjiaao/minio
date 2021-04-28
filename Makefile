@@ -96,6 +96,8 @@ clean:
 	@find . -name '*.test' | xargs rm -fv
 	@find . -name '*~' | xargs rm -fv
 	@rm -rvf minio
+	@rm -rvf minio.exe
+	@rm -rvf data
 	@rm -rvf build
 	@rm -rvf release
 	@rm -rvf .verify*
