@@ -41,7 +41,7 @@ export const MobileHeader = ({ sidebarOpen, toggleSidebar }) => (
         <div className="bottom" />
       </div>
     </div>
-    <img className="mh-logo" src={logo} alt="" />
+    //<img className="mh-logo" src={logo} alt="" />
   </header>
 )
 
