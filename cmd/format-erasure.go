@@ -70,7 +70,7 @@ type formatErasureVersionDetect struct {
 }
 
 // Represents the V1 backend disk structure version
-// under `.minio.sys` and actual data namespace.
+// under `.oss.sys` and actual data namespace.
 // formatErasureV1 - structure holds format config version '1'.
 type formatErasureV1 struct {
 	formatMetaV1
@@ -84,7 +84,7 @@ type formatErasureV1 struct {
 }
 
 // Represents the V2 backend disk structure version
-// under `.minio.sys` and actual data namespace.
+// under `.oss.sys` and actual data namespace.
 // formatErasureV2 - structure holds format config version '2'.
 // The V2 format to support "large bucket" support where a bucket
 // can span multiple erasure sets.
@@ -105,7 +105,7 @@ type formatErasureV2 struct {
 
 // formatErasureV3 struct is same as formatErasureV2 struct except that formatErasureV3.Erasure.Version is "3" indicating
 // the simplified multipart backend which is a flat hierarchy now.
-// In .minio.sys/multipart we have:
+// In .oss.sys/multipart we have:
 // sha256(bucket/object)/uploadID/[xl.meta, part.1, part.2 ....]
 type formatErasureV3 struct {
 	formatMetaV1
@@ -382,7 +382,7 @@ func saveFormatErasure(disk StorageAPI, format *formatErasureV3, heal bool) erro
 }
 
 var ignoredHiddenDirectories = map[string]struct{}{
-	minioMetaBucket:             {}, // metabucket '.minio.sys'
+	minioMetaBucket:             {}, // metabucket '.oss.sys'
 	".minio":                    {}, // users may choose to double down the backend as the config folder for certs
 	".snapshot":                 {}, // .snapshot for ignoring NetApp based persistent volumes WAFL snapshot
 	"lost+found":                {}, // 'lost+found' directory default on ext4 filesystems

@@ -727,8 +727,8 @@ func (a *azureObjects) ListObjects(ctx context.Context, bucket, prefix, marker, 
 		for _, blobPrefix := range resp.Segment.BlobPrefixes {
 			if blobPrefix.Name == minio.GatewayMinioSysTmp {
 				// We don't do strings.HasPrefix(blob.Name, minio.GatewayMinioSysTmp) here so that
-				// we can use tools like mc to inspect the contents of minio.sys.tmp/
-				// It is OK to allow listing of minio.sys.tmp/ in non-recursive mode as it aids in debugging.
+				// we can use tools like mc to inspect the contents of oss.sys.tmp/
+				// It is OK to allow listing of oss.sys.tmp/ in non-recursive mode as it aids in debugging.
 				continue
 			}
 			if !isAzureMarker(marker) && blobPrefix.Name <= marker {

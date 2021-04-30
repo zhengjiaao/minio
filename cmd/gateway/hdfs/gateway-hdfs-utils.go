@@ -25,7 +25,7 @@ import (
 
 const (
 	// Minio meta bucket.
-	minioMetaBucket = ".minio.sys"
+	minioMetaBucket = ".oss.sys"
 
 	// Minio Tmp meta prefix.
 	minioMetaTmpBucket = minioMetaBucket + "/tmp"
@@ -49,7 +49,7 @@ func isReservedOrInvalidBucket(bucketEntry string, strict bool) bool {
 	return isMinioMetaBucket(bucketEntry) || isMinioReservedBucket(bucketEntry)
 }
 
-// Returns true if input bucket is a reserved minio meta bucket '.minio.sys'.
+// Returns true if input bucket is a reserved minio meta bucket '.oss.sys'.
 func isMinioMetaBucket(bucketName string) bool {
 	return bucketName == minioMetaBucket
 }

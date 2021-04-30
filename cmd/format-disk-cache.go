@@ -379,7 +379,7 @@ func migrateOldCache(ctx context.Context, c *diskCache) error {
 	cacheFormatPath := pathJoin(c.dir, minioMetaBucket, formatConfigFile)
 
 	if _, err := os.Stat(oldCacheBucketsPath); err != nil {
-		// remove .minio.sys sub directories
+		// remove .oss.sys sub directories
 		removeAll(path.Join(c.dir, minioMetaBucket, "multipart"))
 		removeAll(path.Join(c.dir, minioMetaBucket, "tmp"))
 		removeAll(path.Join(c.dir, minioMetaBucket, "trash"))
@@ -467,7 +467,7 @@ func migrateOldCache(ctx context.Context, c *diskCache) error {
 		removeAll(path.Join(c.dir, bucket))
 	}
 
-	// remove .minio.sys sub directories
+	// remove .oss.sys sub directories
 	removeAll(path.Join(c.dir, minioMetaBucket, "multipart"))
 	removeAll(path.Join(c.dir, minioMetaBucket, "tmp"))
 	removeAll(path.Join(c.dir, minioMetaBucket, "trash"))

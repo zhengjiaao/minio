@@ -81,10 +81,10 @@ const (
 	// Refer https://cloud.google.com/storage/docs/composite-objects
 	gcsMaxComponents = 32
 
-	// Every 24 hours we scan minio.sys.tmp to delete expired multiparts in minio.sys.tmp
+	// Every 24 hours we scan oss.sys.tmp to delete expired multiparts in oss.sys.tmp
 	gcsCleanupInterval = time.Hour * 24
 
-	// The cleanup routine deletes files older than 2 weeks in minio.sys.tmp
+	// The cleanup routine deletes files older than 2 weeks in oss.sys.tmp
 	gcsMultipartExpiry = time.Hour * 24 * 14
 
 	// Project ID key in credentials.json
@@ -201,7 +201,7 @@ func (g *GCS) NewGatewayLayer(creds auth.Credentials) (minio.ObjectLayer, error)
 		},
 	}
 
-	// Start background process to cleanup old files in minio.sys.tmp
+	// Start background process to cleanup old files in oss.sys.tmp
 	go gcs.CleanupGCSMinioSysTmp(ctx)
 	return gcs, nil
 }
@@ -361,7 +361,7 @@ func (l *gcsGateway) GetMetrics(ctx context.Context) (*minio.BackendMetrics, err
 	return l.metrics, nil
 }
 
-// Cleanup old files in minio.sys.tmp of the given bucket.
+// Cleanup old files in oss.sys.tmp of the given bucket.
 func (l *gcsGateway) CleanupGCSMinioSysTmpBucket(ctx context.Context, bucket string) {
 	it := l.client.Bucket(bucket).Objects(ctx, &storage.Query{Prefix: minio.GatewayMinioSysTmp, Versions: false})
 	for {
@@ -387,7 +387,7 @@ func (l *gcsGateway) CleanupGCSMinioSysTmpBucket(ctx context.Context, bucket str
 	}
 }
 
-// Cleanup old files in minio.sys.tmp of all buckets.
+// Cleanup old files in oss.sys.tmp of all buckets.
 func (l *gcsGateway) CleanupGCSMinioSysTmp(ctx context.Context) {
 	for {
 		it := l.client.Buckets(ctx, l.projectID)
@@ -482,7 +482,7 @@ func (l *gcsGateway) DeleteBucket(ctx context.Context, bucket string, forceDelet
 		Versions:  false,
 	})
 	// We list the bucket and if we find any objects we return BucketNotEmpty error. If we
-	// find only "minio.sys.tmp/" then we remove it before deleting the bucket.
+	// find only "oss.sys.tmp/" then we remove it before deleting the bucket.
 	gcsMinioPathFound := false
 	nonGCSMinioPathFound := false
 	for {
@@ -506,7 +506,7 @@ func (l *gcsGateway) DeleteBucket(ctx context.Context, bucket string, forceDelet
 		return gcsToObjectError(minio.BucketNotEmpty{})
 	}
 	if gcsMinioPathFound {
-		// Remove minio.sys.tmp before deleting the bucket.
+		// Remove oss.sys.tmp before deleting the bucket.
 		itObject = l.client.Bucket(bucket).Objects(ctx, &storage.Query{Versions: false, Prefix: minio.GatewayMinioSysTmp})
 		for {
 			objAttrs, err := itObject.Next()
@@ -1057,7 +1057,7 @@ func (l *gcsGateway) ListMultipartUploads(ctx context.Context, bucket string, pr
 
 		if prefix == mpMeta.Object {
 			// Extract uploadId
-			// E.g minio.sys.tmp/multipart/v1/d063ad89-fdc4-4ea3-a99e-22dba98151f5/gcs.json
+			// E.g oss.sys.tmp/multipart/v1/d063ad89-fdc4-4ea3-a99e-22dba98151f5/gcs.json
 			components := strings.SplitN(attrs.Name, minio.SlashSeparator, 5)
 			if len(components) != 5 {
 				compErr := errors.New("Invalid multipart upload format")
@@ -1086,7 +1086,7 @@ func (l *gcsGateway) ListMultipartUploads(ctx context.Context, bucket string, pr
 	}, nil
 }
 
-// Checks if minio.sys.tmp/multipart/v1/<upload-id>/gcs.json exists, returns
+// Checks if oss.sys.tmp/multipart/v1/<upload-id>/gcs.json exists, returns
 // an object layer compatible error upon any error.
 func (l *gcsGateway) checkUploadIDExists(ctx context.Context, bucket string, key string, uploadID string) error {
 	_, err := l.client.Bucket(bucket).Object(gcsMultipartMetaName(uploadID)).Attrs(ctx)

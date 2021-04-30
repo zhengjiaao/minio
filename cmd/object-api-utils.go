@@ -53,7 +53,7 @@ import (
 
 const (
 	// MinIO meta bucket.
-	minioMetaBucket = ".minio.sys"
+	minioMetaBucket = ".oss.sys"
 	// Multipart meta prefix.
 	mpartMetaPrefix = "multipart"
 	// MinIO Multipart meta prefix.
@@ -347,7 +347,7 @@ func isReservedOrInvalidBucket(bucketEntry string, strict bool) bool {
 	return isMinioMetaBucket(bucketEntry) || isMinioReservedBucket(bucketEntry)
 }
 
-// Returns true if input bucket is a reserved minio meta bucket '.minio.sys'.
+// Returns true if input bucket is a reserved minio meta bucket '.oss.sys'.
 func isMinioMetaBucket(bucketName string) bool {
 	return bucketName == minioMetaBucket
 }

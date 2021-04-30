@@ -1,5 +1,5 @@
 /*
- * MinIO Cloud Storage, (C) 2019 MinIO, Inc.
+ * OSS Cloud Storage, (C) 2019 OSS, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ func handleEncryptedConfigBackend(objAPI ObjectLayer) error {
 
 	// Migrate IAM configuration
 	if err = migrateConfigPrefixToEncrypted(objAPI, globalOldCred, encrypted); err != nil {
-		return fmt.Errorf("Unable to migrate all config at .minio.sys/config/: %w", err)
+		return fmt.Errorf("Unable to migrate all config at .oss.sys/config/: %w", err)
 	}
 
 	return nil
@@ -225,9 +225,9 @@ func migrateConfigPrefixToEncrypted(objAPI ObjectLayer, activeCredOld auth.Crede
 		if activeCredOld.Equal(globalActiveCred) {
 			return nil
 		}
-		logger.Info("Attempting rotation of encrypted config, IAM users and policies on MinIO with newly supplied credentials")
+		logger.Info("Attempting rotation of encrypted config, IAM users and policies on OSS with newly supplied credentials")
 	} else {
-		logger.Info("Attempting encryption of all config, IAM users and policies on MinIO backend")
+		logger.Info("Attempting encryption of all config, IAM users and policies on OSS backend")
 	}
 
 	err := saveConfig(GlobalContext, objAPI, backendEncryptedFile, backendEncryptedMigrationIncomplete)

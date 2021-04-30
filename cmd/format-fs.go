@@ -47,7 +47,7 @@ type formatFSV1 struct {
 
 // formatFSV2 - structure is same as formatFSV1. But the multipart backend
 // structure is flat instead of hierarchy now.
-// In .minio.sys/multipart we have:
+// In .oss.sys/multipart we have:
 // sha256(bucket/object)/uploadID/[fs.json, 1.etag, 2.etag ....]
 type formatFSV2 = formatFSV1
 
@@ -163,7 +163,7 @@ func formatFSMigrate(ctx context.Context, wlk *lock.LockedFile, fsPath string) e
 // Creates a new format.json if unformatted.
 func createFormatFS(fsFormatPath string) error {
 	// Attempt a write lock on formatConfigFile `format.json`
-	// file stored in minioMetaBucket(.minio.sys) directory.
+	// file stored in minioMetaBucket(.oss.sys) directory.
 	lk, err := lock.TryLockedOpenFile(fsFormatPath, os.O_RDWR|os.O_CREATE, 0600)
 	if err != nil {
 		return err

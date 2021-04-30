@@ -2421,8 +2421,8 @@ func migrateV27ToV28() error {
 	return nil
 }
 
-// Migrates ${HOME}/.minio/config.json to '<export_path>/.minio.sys/config/config.json'
-// if etcd is configured then migrates /config/config.json to '<export_path>/.minio.sys/config/config.json'
+// Migrates ${HOME}/.minio/config.json to '<export_path>/.oss.sys/config/config.json'
+// if etcd is configured then migrates /config/config.json to '<export_path>/.oss.sys/config/config.json'
 func migrateConfigToMinioSys(objAPI ObjectLayer) (err error) {
 	// Construct path to config.json for the given bucket.
 	configFile := path.Join(minioConfigPrefix, minioConfigFile)
@@ -2469,7 +2469,7 @@ func migrateConfigToMinioSys(objAPI ObjectLayer) (err error) {
 	return saveServerConfig(GlobalContext, objAPI, config)
 }
 
-// Migrates '.minio.sys/config.json' to v33.
+// Migrates '.oss.sys/config.json' to v33.
 func migrateMinioSysConfig(objAPI ObjectLayer) error {
 	// Construct path to config.json for the given bucket.
 	configFile := path.Join(minioConfigPrefix, minioConfigFile)
