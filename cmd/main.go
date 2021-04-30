@@ -133,16 +133,16 @@ func newApp(name string) *cli.App {
 
 	app := cli.NewApp()
 	app.Name = name
-	app.Author = "MinIO, Inc."
+	app.Author = "DIST, Zhengja."
 	app.Version = ReleaseTag
 	app.Usage = "High Performance Object Storage"
-	app.Description = `Build high performance data infrastructure for machine learning, analytics and application data workloads with MinIO`
+	app.Description = `Build high performance data infrastructure for machine learning, analytics and application data workloads with OSS`
 	app.Flags = GlobalFlags
 	app.HideHelpCommand = true // Hide `help, h` command, we already have `minio --help`.
 	app.Commands = commands
 	app.CustomAppHelpTemplate = minioHelpTemplate
 	app.CommandNotFound = func(ctx *cli.Context, command string) {
-		console.Printf("‘%s’ is not a minio sub-command. See ‘minio --help’.\n", command)
+		console.Printf("‘%s’ is not a oss sub-command. See ‘oss --help’.\n", command)
 		closestCommands := findClosestCommands(command)
 		if len(closestCommands) > 0 {
 			console.Println()
