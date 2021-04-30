@@ -63,13 +63,13 @@ build: checks
 
 # 新增支持在linux上编译windows可执行文件(oss.exe)
 win: checks
-        @echo "Building oss windwos exe to './oss.exe'"
-        @GO111MODULE=on CGO_ENABLED=0 GOOS=windows go build -tags kqueue -trimpath --ldflags "$(LDFLAGS)" -o $(PWD)/oss.exe 1>/dev/null
+	@echo "Building oss windwos exe to './oss.exe'"
+	@GO111MODULE=on CGO_ENABLED=0 GOOS=windows go build -tags kqueue -trimpath --ldflags "$(LDFLAGS)" -o $(PWD)/oss.exe 1>/dev/null
 
-# 新增支持在linux上编译mac
+ # 新增支持在linux上编译mac
 mac: checks
-        @echo "Building oss mac binary to './oss'"
-        @GO111MODULE=on CGO_ENABLED=0 GOOS=darwin go build -tags kqueue -trimpath --ldflags "$(LDFLAGS)" -o $(PWD)/oss 1>/dev/null
+	@echo "Building oss mac binary to './oss'"
+	@GO111MODULE=on CGO_ENABLED=0 GOOS=darwin go build -tags kqueue -trimpath --ldflags "$(LDFLAGS)" -o $(PWD)/oss 1>/dev/null
 
 hotfix-vars:
 	$(eval LDFLAGS := $(shell MINIO_RELEASE="RELEASE" MINIO_HOTFIX="hotfix.$(shell git rev-parse --short HEAD)" go run buildscripts/gen-ldflags.go $(shell git describe --tags --abbrev=0 | \
@@ -97,7 +97,8 @@ clean:
 	@find . -name '*~' | xargs rm -fv
 	@rm -rvf oss
 	@rm -rvf oss.exe
-	@rm -rvf data
 	@rm -rvf build
+	@rm -rvf data
 	@rm -rvf release
 	@rm -rvf .verify*
+
