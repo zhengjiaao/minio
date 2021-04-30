@@ -6,7 +6,7 @@ GOARCH := $(shell go env GOARCH)
 GOOS := $(shell go env GOOS)
 
 VERSION ?= $(shell git describe --tags)
-TAG ?= "minio/minio:$(VERSION)"
+TAG ?= "oss/oss:$(VERSION)"
 
 all: build
 
@@ -34,7 +34,7 @@ lint:
 	@GO111MODULE=on ${GOPATH}/bin/golangci-lint cache clean
 	@GO111MODULE=on ${GOPATH}/bin/golangci-lint run --build-tags kqueue --timeout=10m --config ./.golangci.yml
 
-# Builds minio, runs the verifiers then runs the tests.
+# Builds oss, runs the verifiers then runs the tests.
 check: test
 test: verifiers build
 	@echo "Running unit tests"
@@ -44,59 +44,59 @@ test-race: verifiers build
 	@echo "Running unit tests under -race"
 	@(env bash $(PWD)/buildscripts/race.sh)
 
-# Verify minio binary
+# Verify oss binary
 verify:
 	@echo "Verifying build with race"
-	@GO111MODULE=on CGO_ENABLED=1 go build -tags kqueue -trimpath --ldflags "$(LDFLAGS)" -o $(PWD)/minio 1>/dev/null
+	@GO111MODULE=on CGO_ENABLED=1 go build -tags kqueue -trimpath --ldflags "$(LDFLAGS)" -o $(PWD)/oss 1>/dev/null
 	@(env bash $(PWD)/buildscripts/verify-build.sh)
 
-# Verify healing of disks with minio binary
+# Verify healing of disks with oss binary
 verify-healing:
 	@echo "Verify healing build with race"
-	@GO111MODULE=on CGO_ENABLED=1 go build -race -tags kqueue -trimpath --ldflags "$(LDFLAGS)" -o $(PWD)/minio 1>/dev/null
+	@GO111MODULE=on CGO_ENABLED=1 go build -race -tags kqueue -trimpath --ldflags "$(LDFLAGS)" -o $(PWD)/oss 1>/dev/null
 	@(env bash $(PWD)/buildscripts/verify-healing.sh)
 
-# Builds minio locally.
+# Builds oss locally.
 build: checks
-	@echo "Building minio binary to './minio'"
-	@GO111MODULE=on CGO_ENABLED=0 go build -tags kqueue -trimpath --ldflags "$(LDFLAGS)" -o $(PWD)/minio 1>/dev/null
+	@echo "Building oss binary to './oss'"
+	@GO111MODULE=on CGO_ENABLED=0 go build -tags kqueue -trimpath --ldflags "$(LDFLAGS)" -o $(PWD)/oss 1>/dev/null
 
-# 新增支持在linux上编译windows可执行文件(minio.exe)
+# 新增支持在linux上编译windows可执行文件(oss.exe)
 win: checks
-        @echo "Building minio windwos exe to './minio.exe'"
-        @GO111MODULE=on CGO_ENABLED=0 GOOS=windows go build -tags kqueue -trimpath --ldflags "$(LDFLAGS)" -o $(PWD)/minio.exe 1>/dev/null
+        @echo "Building oss windwos exe to './oss.exe'"
+        @GO111MODULE=on CGO_ENABLED=0 GOOS=windows go build -tags kqueue -trimpath --ldflags "$(LDFLAGS)" -o $(PWD)/oss.exe 1>/dev/null
 
 # 新增支持在linux上编译mac
 mac: checks
-        @echo "Building minio mac binary to './minio'"
-        @GO111MODULE=on CGO_ENABLED=0 GOOS=darwin go build -tags kqueue -trimpath --ldflags "$(LDFLAGS)" -o $(PWD)/minio 1>/dev/null
+        @echo "Building oss mac binary to './oss'"
+        @GO111MODULE=on CGO_ENABLED=0 GOOS=darwin go build -tags kqueue -trimpath --ldflags "$(LDFLAGS)" -o $(PWD)/oss 1>/dev/null
 
 hotfix-vars:
 	$(eval LDFLAGS := $(shell MINIO_RELEASE="RELEASE" MINIO_HOTFIX="hotfix.$(shell git rev-parse --short HEAD)" go run buildscripts/gen-ldflags.go $(shell git describe --tags --abbrev=0 | \
     sed 's#RELEASE\.\([0-9]\+\)-\([0-9]\+\)-\([0-9]\+\)T\([0-9]\+\)-\([0-9]\+\)-\([0-9]\+\)Z#\1-\2-\3T\4:\5:\6Z#')))
-	$(eval TAG := "minio/minio:$(shell git describe --tags --abbrev=0).hotfix.$(shell git rev-parse --short HEAD)")
+	$(eval TAG := "oss/oss:$(shell git describe --tags --abbrev=0).hotfix.$(shell git rev-parse --short HEAD)")
 hotfix: hotfix-vars install
 
 docker-hotfix: hotfix checks
-	@echo "Building minio docker image '$(TAG)'"
+	@echo "Building oss docker image '$(TAG)'"
 	@docker build -t $(TAG) . -f Dockerfile.dev
 
 docker: build checks
-	@echo "Building minio docker image '$(TAG)'"
+	@echo "Building oss docker image '$(TAG)'"
 	@docker build -t $(TAG) . -f Dockerfile.dev
 
-# Builds minio and installs it to $GOPATH/bin.
+# Builds oss and installs it to $GOPATH/bin.
 install: build
-	@echo "Installing minio binary to '$(GOPATH)/bin/minio'"
-	@mkdir -p $(GOPATH)/bin && cp -f $(PWD)/minio $(GOPATH)/bin/minio
-	@echo "Installation successful. To learn more, try \"minio --help\"."
+	@echo "Installing oss binary to '$(GOPATH)/bin/oss'"
+	@mkdir -p $(GOPATH)/bin && cp -f $(PWD)/oss $(GOPATH)/bin/oss
+	@echo "Installation successful. To learn more, try \"oss --help\"."
 
 clean:
 	@echo "Cleaning up all the generated files"
 	@find . -name '*.test' | xargs rm -fv
 	@find . -name '*~' | xargs rm -fv
-	@rm -rvf minio
-	@rm -rvf minio.exe
+	@rm -rvf oss
+	@rm -rvf oss.exe
 	@rm -rvf data
 	@rm -rvf build
 	@rm -rvf release
