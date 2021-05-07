@@ -175,18 +175,18 @@ func printEventNotifiers() {
 // and custom platform specific message.
 func printCLIAccessMsg(endPoint string, alias string) {
 	// Get saved credentials.
-	cred := globalActiveCred
+	//cred := globalActiveCred
 
 	// Configure 'mc', following block prints platform specific information for minio client.
 	if color.IsTerminal() && !globalCLIContext.Anonymous {
 		//logStartupMessage(color.Blue("\nCommand-line Access: ") + mcQuickStartGuide)
 		if runtime.GOOS == globalWindowsOSName {
-			mcMessage := fmt.Sprintf("$ mc.exe alias set %s %s %s %s", alias,
-				endPoint, cred.AccessKey, cred.SecretKey)
+			//mcMessage := fmt.Sprintf("$ mc.exe alias set %s %s %s %s", alias,
+			//endPoint, cred.AccessKey, cred.SecretKey)
 			//logStartupMessage(fmt.Sprintf(getFormatStr(len(mcMessage), 3), mcMessage))
 		} else {
-			mcMessage := fmt.Sprintf("$ mc alias set %s %s %s %s", alias,
-				endPoint, cred.AccessKey, cred.SecretKey)
+			//mcMessage := fmt.Sprintf("$ mc alias set %s %s %s %s", alias,
+			//endPoint, cred.AccessKey, cred.SecretKey)
 			//logStartupMessage(fmt.Sprintf(getFormatStr(len(mcMessage), 3), mcMessage))
 		}
 	}
